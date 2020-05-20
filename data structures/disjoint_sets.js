@@ -101,9 +101,12 @@ unify('a', 'c');
 console.log(elements);
 console.log(roots);
 
+
 unify('d', 'e');
 console.log(elements);
 console.log(roots);
+
+
 
 unify('g', 'b');
 console.log(elements);
