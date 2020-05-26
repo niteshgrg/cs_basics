@@ -12,7 +12,6 @@ var bstFromPreorder = function(preorder) {
         let newNode = new TreeNode(preorder[i]);
         while(treeStack.length > 0 && treeStack[treeStack.length - 1].val < newNode.val) {
             parent = treeStack.pop();
-            continue;
         }
         console.log(treeStack)
         if(parent.val > newNode.val) { 
@@ -26,21 +25,6 @@ var bstFromPreorder = function(preorder) {
             treeStack.push(newNode);
             parent = newNode;
         }
-//         if (preorder[i] < preorder[i-1]) {
-//             treeStack[treeStack.length-1].left = newNode;
-//             treeStack.push(newNode);
-//         } else {
-//             let j = 1;
-            
-//             while(treeStack[treeStack.length - 1].val < newNode.val && treeStack.length > 0) {
-//                 parent = treeStack.pop();
-//                 j++;
-//             }
-
-//             parent.right = newNode;
-
-//             treeStack.push(newNode);
-//         }
     }
     return root;
 };
