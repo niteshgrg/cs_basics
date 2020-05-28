@@ -22,7 +22,7 @@ var possibleBipartition = function(N, dislikes) {
         }
     }
 
-    var bfs = function(node, color) {
+    var dfs = function(node, color) {
         if(visited[node]) {
             if(colorArr[node] == color) {
                 return true;
@@ -38,7 +38,7 @@ var possibleBipartition = function(N, dislikes) {
 
         if(graph[node]) {
             for(let i of graph[node]) {
-                if(!bfs(i, color == 'r' ? 'b' : 'r')) {
+                if(!dfs(i, color == 'r' ? 'b' : 'r')) {
                     return false;
                 }
             }
@@ -49,7 +49,7 @@ var possibleBipartition = function(N, dislikes) {
 
     for(let i = 1; i <= N; i++) {
         if(!visited[i]) {
-            if(!bfs(i, 'r')) {
+            if(!dfs(i, 'r')) {
                 return false;
             }
         }
