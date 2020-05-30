@@ -77,6 +77,25 @@ function sortLcpArr(lcpArray, combinedStringArray) {
   return lcpArray;
 }
 
+function getOverlapArr(lcpArray, combinedStringArray) {
+  let storeCommonChar = [0];
+
+  for (let i = 1; i < lcpArray.length; i++) {
+    let commonElements = 0;
+    while (
+      combinedStringArray[lcpArray[i]][commonElements] ===
+      combinedStringArray[lcpArray[i - 1]][commonElements]
+    ) {
+      commonElements++;
+    }
+    storeCommonChar.push(commonElements);
+  }
+
+  return storeCommonChar;
+}
+
+function getVarities(startIndex, endIndex) {}
+
 let sentinalIndexes = [];
 let stringArray = ["abcd", "bcda", "abc", "defg"];
 
@@ -87,6 +106,8 @@ let lcpArray = constructLcpArr(combinedStringArray);
 lcpArray = sortLcpArr(lcpArray, combinedStringArray).slice(
   sentinalIndexes.length
 );
+
+let storeCommonChar = getOverlapArr(lcpArray, combinedStringArray);
 
 console.log(combinedStringArray);
 console.log(lcpArray);
