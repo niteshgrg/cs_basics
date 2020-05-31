@@ -83,8 +83,8 @@ function getOverlapArr(lcpArray, combinedStringArray) {
   for (let i = 1; i < lcpArray.length; i++) {
     let commonElements = 0;
     while (
-      combinedStringArray[lcpArray[i]][commonElements] ===
-      combinedStringArray[lcpArray[i - 1]][commonElements]
+      combinedStringArray[lcpArray[i] + commonElements] ===
+      combinedStringArray[lcpArray[i - 1] + commonElements]
     ) {
       commonElements++;
     }
@@ -94,10 +94,50 @@ function getOverlapArr(lcpArray, combinedStringArray) {
   return storeCommonChar;
 }
 
-function getVarities(startIndex, endIndex) {}
+function getVarities(startIndex, endIndex, sentinalIndexes, lcpArray) {
+  let varietyType = new Set();
+  for (let i = startIndex; i <= endIndex; i++) {
+    let j = 0;
+    while (lcpArray[i] < sentinalIndexes[j]) {
+      j++;
+    }
+    varietyType.add(j);
+  }
+  return varietyType.size;
+}
+
+function getMinValue(startIndex, endIndex, storeCommonChar) {
+  let minValue = Number.MAX_SAFE_INTEGER;
+  for (let i = startIndex + 1; i <= endIndex; i++) {
+    if (storeCommonChar[i] < minValue) {
+      minValue = storeCommonChar[i];
+    }
+  }
+  return minValue;
+}
+
+function getString(
+  slidingWindowStartIndex,
+  lcpArray,
+  combinedStringArray,
+  commonStrings
+) {
+  let t = "";
+  for (
+    let i = lcpArray[slidingWindowStartIndex];
+    i < lcpArray[slidingWindowStartIndex] + commonStrings;
+    i++
+  ) {
+    t += combinedStringArray[i];
+  }
+  return t;
+}
 
 let sentinalIndexes = [];
 let stringArray = ["abcd", "bcda", "abc", "defg"];
+let K = 2;
+let biggestStringSet = new Set();
+let biggestStringLength = 0;
 
 let combinedStringArray = addSentinals(stringArray, sentinalIndexes);
 
@@ -109,6 +149,51 @@ lcpArray = sortLcpArr(lcpArray, combinedStringArray).slice(
 
 let storeCommonChar = getOverlapArr(lcpArray, combinedStringArray);
 
-console.log(combinedStringArray);
-console.log(lcpArray);
-console.log(sentinalIndexes);
+let slidingWindowStartIndex = 0;
+let slidingWindowEndIndex = 1;
+
+while (slidingWindowEndIndex < lcpArray.length) {
+  let varities = getVarities(
+    slidingWindowStartIndex,
+    slidingWindowEndIndex,
+    sentinalIndexes,
+    lcpArray
+  );
+
+  if (varities >= K) {
+    let commonStrings = getMinValue(
+      slidingWindowStartIndex,
+      slidingWindowEndIndex,
+      storeCommonChar
+    );
+
+    if (commonStrings > biggestStringLength) {
+      biggestStringSet.clear();
+      biggestStringLength = commonStrings;
+
+      biggestStringSet.add(
+        getString(
+          slidingWindowStartIndex,
+          lcpArray,
+          combinedStringArray,
+          commonStrings
+        )
+      );
+    } else if (commonStrings === biggestStringLength) {
+      biggestStringSet.add(
+        getString(
+          slidingWindowStartIndex,
+          lcpArray,
+          combinedStringArray,
+          commonStrings
+        )
+      );
+    }
+    slidingWindowStartIndex++;
+  } else {
+    slidingWindowEndIndex++;
+  }
+}
+
+console.log(biggestStringLength);
+console.log(biggestStringSet);
