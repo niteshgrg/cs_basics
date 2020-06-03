@@ -27,19 +27,18 @@ Note:
 */
 
 var twoCitySchedCost = function (costs) {
-  let travelCostDiff = costs.map((cost, i) => [cost[0] - cost[1], i]);
   let output = 0;
 
-  travelCostDiff.sort((a, b) => a[0] - b[0]);
+  costs.sort((a, b) => a[0] - a[1] - (b[0] - b[1]));
 
-  let dividePoint = travelCostDiff.length / 2;
+  let dividePoint = costs.length / 2;
 
   for (let i = 0; i < dividePoint; i++) {
-    output += costs[travelCostDiff[i][1]][0];
+    output += costs[i][0];
   }
 
-  for (let i = dividePoint; i < travelCostDiff.length; i++) {
-    output += costs[travelCostDiff[i][1]][1];
+  for (let i = dividePoint; i < costs.length; i++) {
+    output += costs[i][1];
   }
 
   return output;
