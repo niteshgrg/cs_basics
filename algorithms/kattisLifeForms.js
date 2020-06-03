@@ -40,160 +40,190 @@ cdefgh
 
  */
 
-function addSentinals(stringArray, sentinalIndexes) {
-  let sentinal = 35;
-  let t = [];
+function findCommonStrings(stringArray, K) {
+  function addSentinals(stringArray, sentinalIndexes) {
+    let sentinal = 35;
+    let t = [];
 
-  for (let s of stringArray) {
-    t = t.concat(s.split(""));
-    sentinalIndexes.push(t.length);
-    if (sentinal < 97) {
-      t.push(String.fromCharCode(sentinal));
-    } else {
-      t.push(String.fromCharCode(sentinal - 62, sentinal - 62));
+    for (let s of stringArray) {
+      t = t.concat(s.split(""));
+      sentinalIndexes.push(t.length);
+      if (sentinal < 97) {
+        t.push(String.fromCharCode(sentinal));
+      } else {
+        t.push(String.fromCharCode(sentinal - 62, sentinal - 62));
+      }
+      sentinal++;
     }
-    sentinal++;
-  }
-  return t;
-}
-
-function constructLcpArr(strArr) {
-  let lcpArray = [];
-  for (let i = 0; i < strArr.length; i++) {
-    lcpArray.push(i);
+    return t;
   }
 
-  return lcpArray;
-}
-
-function sortLcpArr(lcpArray, combinedStringArray) {
-  lcpArray.sort((a, b) => {
-    let cmp = combinedStringArray
-      .slice(a)
-      .join("")
-      .localeCompare(combinedStringArray.slice(b).join(""));
-    return cmp;
-  });
-  return lcpArray;
-}
-
-function getOverlapArr(lcpArray, combinedStringArray) {
-  let storeCommonChar = [0];
-
-  for (let i = 1; i < lcpArray.length; i++) {
-    let commonElements = 0;
-    while (
-      combinedStringArray[lcpArray[i] + commonElements] ===
-      combinedStringArray[lcpArray[i - 1] + commonElements]
-    ) {
-      commonElements++;
+  function constructLcpArr(strArr) {
+    let lcpArray = [];
+    for (let i = 0; i < strArr.length; i++) {
+      lcpArray.push(i);
     }
-    storeCommonChar.push(commonElements);
+
+    return lcpArray;
   }
 
-  return storeCommonChar;
-}
+  function sortLcpArr(lcpArray, combinedStringArray) {
+    lcpArray.sort((a, b) => {
+      let cmp = combinedStringArray
+        .slice(a)
+        .join("")
+        .localeCompare(combinedStringArray.slice(b).join(""));
+      return cmp;
+    });
+    return lcpArray;
+  }
 
-function getVarities(startIndex, endIndex, sentinalIndexes, lcpArray) {
-  let varietyType = new Set();
-  for (let i = startIndex; i <= endIndex; i++) {
-    let j = 0;
-    while (lcpArray[i] < sentinalIndexes[j]) {
-      j++;
+  function getOverlapArr(lcpArray, combinedStringArray) {
+    let storeCommonChar = [0];
+
+    for (let i = 1; i < lcpArray.length; i++) {
+      let commonElements = 0;
+      while (
+        combinedStringArray[lcpArray[i] + commonElements] ===
+        combinedStringArray[lcpArray[i - 1] + commonElements]
+      ) {
+        commonElements++;
+      }
+      storeCommonChar.push(commonElements);
     }
-    varietyType.add(j);
-  }
-  return varietyType.size;
-}
 
-function getMinValue(startIndex, endIndex, storeCommonChar) {
-  let minValue = Number.MAX_SAFE_INTEGER;
-  for (let i = startIndex + 1; i <= endIndex; i++) {
-    if (storeCommonChar[i] < minValue) {
-      minValue = storeCommonChar[i];
+    return storeCommonChar;
+  }
+
+  function getVarities(startIndex, endIndex, sentinalIndexes, lcpArray) {
+    let varietyType = new Set();
+    for (let i = startIndex; i <= endIndex; i++) {
+      let j = 0;
+      while (lcpArray[i] < sentinalIndexes[j]) {
+        j++;
+      }
+      varietyType.add(j);
     }
+    return varietyType.size;
   }
-  return minValue;
-}
 
-function getString(
-  slidingWindowStartIndex,
-  lcpArray,
-  combinedStringArray,
-  commonStrings
-) {
-  let t = "";
-  for (
-    let i = lcpArray[slidingWindowStartIndex];
-    i < lcpArray[slidingWindowStartIndex] + commonStrings;
-    i++
-  ) {
-    t += combinedStringArray[i];
+  function getMinValue(startIndex, endIndex, storeCommonChar) {
+    let minValue = Number.MAX_SAFE_INTEGER;
+    for (let i = startIndex + 1; i <= endIndex; i++) {
+      if (storeCommonChar[i] < minValue) {
+        minValue = storeCommonChar[i];
+      }
+    }
+    return minValue;
   }
-  return t;
-}
 
-let sentinalIndexes = [];
-let stringArray = ["abcd", "bcda", "abc", "defg"];
-let K = 2;
-let biggestStringSet = new Set();
-let biggestStringLength = 0;
-
-let combinedStringArray = addSentinals(stringArray, sentinalIndexes);
-
-let lcpArray = constructLcpArr(combinedStringArray);
-
-lcpArray = sortLcpArr(lcpArray, combinedStringArray).slice(
-  sentinalIndexes.length
-);
-
-let storeCommonChar = getOverlapArr(lcpArray, combinedStringArray);
-
-let slidingWindowStartIndex = 0;
-let slidingWindowEndIndex = 1;
-
-while (slidingWindowEndIndex < lcpArray.length) {
-  let varities = getVarities(
+  function getString(
     slidingWindowStartIndex,
-    slidingWindowEndIndex,
-    sentinalIndexes,
-    lcpArray
+    lcpArray,
+    combinedStringArray,
+    commonStrings
+  ) {
+    let t = "";
+    for (
+      let i = lcpArray[slidingWindowStartIndex];
+      i < lcpArray[slidingWindowStartIndex] + commonStrings;
+      i++
+    ) {
+      t += combinedStringArray[i];
+    }
+    return t;
+  }
+
+  let sentinalIndexes = [];
+
+  let biggestStringSet = new Set();
+  let biggestStringLength = 0;
+
+  let combinedStringArray = addSentinals(stringArray, sentinalIndexes);
+
+  let lcpArray = constructLcpArr(combinedStringArray);
+
+  lcpArray = sortLcpArr(lcpArray, combinedStringArray).slice(
+    sentinalIndexes.length
   );
 
-  if (varities >= K) {
-    let commonStrings = getMinValue(
+  let storeCommonChar = getOverlapArr(lcpArray, combinedStringArray);
+
+  let slidingWindowStartIndex = 0;
+  let slidingWindowEndIndex = 1;
+
+  while (slidingWindowEndIndex < lcpArray.length) {
+    let varities = getVarities(
       slidingWindowStartIndex,
       slidingWindowEndIndex,
-      storeCommonChar
+      sentinalIndexes,
+      lcpArray
     );
 
-    if (commonStrings > biggestStringLength) {
-      biggestStringSet.clear();
-      biggestStringLength = commonStrings;
+    if (varities >= K) {
+      let commonStrings = getMinValue(
+        slidingWindowStartIndex,
+        slidingWindowEndIndex,
+        storeCommonChar
+      );
 
-      biggestStringSet.add(
-        getString(
-          slidingWindowStartIndex,
-          lcpArray,
-          combinedStringArray,
-          commonStrings
-        )
-      );
-    } else if (commonStrings === biggestStringLength) {
-      biggestStringSet.add(
-        getString(
-          slidingWindowStartIndex,
-          lcpArray,
-          combinedStringArray,
-          commonStrings
-        )
-      );
+      if (commonStrings > biggestStringLength) {
+        biggestStringSet.clear();
+        biggestStringLength = commonStrings;
+
+        biggestStringSet.add(
+          getString(
+            slidingWindowStartIndex,
+            lcpArray,
+            combinedStringArray,
+            commonStrings
+          )
+        );
+      } else if (commonStrings === biggestStringLength) {
+        biggestStringSet.add(
+          getString(
+            slidingWindowStartIndex,
+            lcpArray,
+            combinedStringArray,
+            commonStrings
+          )
+        );
+      }
+      slidingWindowStartIndex++;
+    } else {
+      slidingWindowEndIndex++;
     }
-    slidingWindowStartIndex++;
-  } else {
-    slidingWindowEndIndex++;
   }
+
+  if (biggestStringLength === 0) {
+    biggestStringSet.clear();
+    biggestStringSet.add("?");
+  }
+
+  return biggestStringSet;
 }
 
-console.log(biggestStringLength);
-console.log(biggestStringSet);
+// let stringArray = ["abcd", "bcda", "abc", "defg"];
+// let K = 2;
+// console.log(findCommonStrings(stringArray, K));
+
+// stringArray = ["abcd", "efgh"];
+// console.log(findCommonStrings(stringArray, K));
+
+let line = readline();
+while (line !== "0") {
+  line = parseInt(line);
+  let K = Math.ceil(line / 2);
+  let strArr = [];
+
+  for (let i = 0; i < K; i++) {
+    let str = readline();
+    strArr.push(str);
+  }
+
+  let strSet = findCommonStrings(strArr, K);
+  for (let item of strSet.values()) print(item);
+  print("");
+
+  line = readline();
+}
