@@ -5,23 +5,30 @@
 var reconstructQueue = function (people) {
   people.sort((a, b) => (a[0] - b[0] !== 0 ? a[0] - b[0] : b[1] - a[1]));
   let outputArr = [];
-  let filledIndex = [];
+  let unFilledIndex = [];
 
   for (let i = 0; i < people.length; i++) {
-    let index = people[i][1];
-    let allsmallerFilledIndex = filledIndex.filter((x) => x <= index).length;
-    let newAllsmallerFilledIndex = filledIndex.filter(
-      (x) => x <= index + allsmallerFilledIndex
-    ).length;
+    unFilledIndex.push(i);
+  }
 
-    while (allsmallerFilledIndex !== newAllsmallerFilledIndex) {
-      allsmallerFilledIndex = newAllsmallerFilledIndex;
-      newAllsmallerFilledIndex = filledIndex.filter(
-        (x) => x <= index + allsmallerFilledIndex
-      ).length;
-    }
-    index += allsmallerFilledIndex;
-    filledIndex.push(index);
+  for (let i = 0; i < people.length; i++) {
+    let emptySlotNum = people[i][1];
+    let index = unFilledIndex[emptySlotNum];
+    unFilledIndex.splice(emptySlotNum, 1);
+
+    // let allsmallerFilledIndex = filledIndex.filter((x) => x <= index).length;
+    // let newAllsmallerFilledIndex = filledIndex.filter(
+    //   (x) => x <= index + allsmallerFilledIndex
+    // ).length;
+
+    // while (allsmallerFilledIndex !== newAllsmallerFilledIndex) {
+    //   allsmallerFilledIndex = newAllsmallerFilledIndex;
+    //   newAllsmallerFilledIndex = filledIndex.filter(
+    //     (x) => x <= index + allsmallerFilledIndex
+    //   ).length;
+    // }
+    // index += allsmallerFilledIndex;
+    // filledIndex.push(index);
     outputArr[index] = people[i];
   }
 
