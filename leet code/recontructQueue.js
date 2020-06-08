@@ -15,20 +15,6 @@ var reconstructQueue = function (people) {
     let emptySlotNum = people[i][1];
     let index = unFilledIndex[emptySlotNum];
     unFilledIndex.splice(emptySlotNum, 1);
-
-    // let allsmallerFilledIndex = filledIndex.filter((x) => x <= index).length;
-    // let newAllsmallerFilledIndex = filledIndex.filter(
-    //   (x) => x <= index + allsmallerFilledIndex
-    // ).length;
-
-    // while (allsmallerFilledIndex !== newAllsmallerFilledIndex) {
-    //   allsmallerFilledIndex = newAllsmallerFilledIndex;
-    //   newAllsmallerFilledIndex = filledIndex.filter(
-    //     (x) => x <= index + allsmallerFilledIndex
-    //   ).length;
-    // }
-    // index += allsmallerFilledIndex;
-    // filledIndex.push(index);
     outputArr[index] = people[i];
   }
 
@@ -62,5 +48,3 @@ console.log(
     [1, 0],
   ])
 );
-
-// [[1,0],[2,0],,[3,1],[1,4],,,,[4,5]]
