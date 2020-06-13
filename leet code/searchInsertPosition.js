@@ -3,8 +3,6 @@ var searchInsert = function (nums, target) {
   let high = nums.length - 1;
   while (low <= high) {
     let mid = Math.ceil((low + high) / 2);
-
-    console.log(nums[mid] === target);
     if (nums[mid] === target) {
       return mid;
     }
