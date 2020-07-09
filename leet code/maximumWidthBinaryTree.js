@@ -14,31 +14,29 @@ var widthOfBinaryTree = function (root) {
   let maxWidth = 0;
 
   let stack = [root];
+  let values = [0];
 
   while (stack.length > 0) {
-    if (stack.length > maxWidth) {
-      maxWidth = stack.length;
+    let newWidth = values[values.length - 1] - values[0] + 1;
+    if (newWidth > maxWidth) {
+      maxWidth = newWidth;
     }
 
     let childrens = [];
-    for (let node of stack) {
-      if (node === null) {
-        childrens.push(null);
-        childrens.push(null);
-      } else {
-        childrens.push(node.left);
-        childrens.push(node.right);
+    let newValues = [];
+    for (let i = 0; i < stack.length; i++) {
+      if (stack[i].left !== null) {
+        childrens.push(stack[i].left);
+        newValues.push(2 * values[i]);
+      }
+      if (stack[i].right !== null) {
+        childrens.push(stack[i].right);
+        newValues.push(2 * values[i] + 1);
       }
     }
 
-    while (childrens[childrens.length - 1] === null) {
-      childrens.pop();
-    }
-
-    while (childrens.length > 0 && childrens[0] === null) {
-      childrens.shift();
-    }
     stack = childrens;
+    values = newValues;
   }
 
   return maxWidth;
