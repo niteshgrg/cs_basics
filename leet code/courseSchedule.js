@@ -43,11 +43,6 @@ var isCyclic = function (visited, recStack, node, graph) {
   return false;
 };
 
-let a = {
-  "1": [0],
-  "0": [1],
-};
-
 //true
 console.log(canFinish(2, [[1, 0]]));
 
