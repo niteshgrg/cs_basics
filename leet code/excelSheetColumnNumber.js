@@ -3,14 +3,12 @@
  * @return {number}
  */
 var titleToNumber = function (s) {
-  let arr = s.split("");
-
   let output = 0;
 
-  for (let i = 0; i < arr.length; i++) {
-    let code = arr[i].charCodeAt() - 64;
+  for (let i = 0; i < s.length; i++) {
+    let code = s.charCodeAt(i) - 64;
 
-    output += code * Math.pow(26, arr.length - 1 - i);
+    output += code * Math.pow(26, s.length - 1 - i);
   }
 
   return output;
